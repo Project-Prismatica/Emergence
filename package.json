@@ -1,0 +1,23 @@
+{
+  "name": "emergence",
+  "version": "0.0.1",
+  "description": "The Emergence fabric is an interface where interaction and integration of disparate information security subsystems gain combined intellegence",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon server.js"
+  },
+  "keywords": [
+    "InfoSec",
+    "Penetration Testing"
+  ],
+  "author": "Matthew Toussain (0sm0s1z)",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.2",
+    "mongodb": "^3.0.1"
+  },
+  "devDependencies": {
+    "body-parser": "^1.18.2",
+    "nodemon": "^1.14.11"
+  }
+}
