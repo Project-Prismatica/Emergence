@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 const MongoClient = require('mongodb').MongoClient;
 var db
 
-MongoClient.connect('mongodb://admin:admin@127.0.0.1:27017', (err, client) => {
+MongoClient.connect('mongodb://admin:admin@mongo:27017', (err, client) => {
   if (err) return console.log(err)
   db = client.db('prismatica') // whatever your database name is
   app.listen(29001, () => {
