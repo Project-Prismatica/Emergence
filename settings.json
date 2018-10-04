@@ -1,0 +1,7 @@
+{
+  "Description": "Settings Variables for PRISMatica",
+  "lwd": "C:\\Users\\0zm0s1z\\Projects\\Prismatica\\src\\",
+  "dataDir": "C:\\Users\\0zm0s1z\\Projects\\Prismatica\\src\\database\\",
+  "rpcHost": "localhost",
+  "rpcPort": "8010"
+}
