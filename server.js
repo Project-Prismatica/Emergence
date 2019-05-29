@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 const MongoClient = require('mongodb').MongoClient;
 var db
 
-MongoClient.connect('mongodb://mongodb:27017', (err, client) => {
+MongoClient.connect('mongodb://localhost:27017', (err, client) => {
   if (err) return console.log(err)
   db = client.db('prismatica') // whatever your database name is
   app.listen(29001, () => {
@@ -26,19 +26,22 @@ app.get('/', function(req, res) {
 //Get API data
 app.post('/api/get/', (req, res) => {
    // Determine query type
-   console.log(req.body)
+   //console.log(req.body)
+   //console.log("GET")
 
    // If query == Get Tasks
    if (req.body.collection == "TASK") {
-     // IF beacon... new session?
+
      const sess = db.collection('SESSIONS');
      sess.find({agentid:req.body.agentid}).limit(1).toArray(function (err, result) {
          if (err) throw err
-         console.log(result);
+         //console.log(result);
+         // IF beacon... new session?
          if (result[0] == null) {
+           console.log("New Session Detected");
            var sessionDetails = {
              agentid: req.body.agentid,
-             type: "Gryffindor",
+             type: "Gryf",
              user: "ozymandias\\0zm0z1z",
              delay: 5,
              last: Date.now()
@@ -46,8 +49,17 @@ app.post('/api/get/', (req, res) => {
            sess.save(sessionDetails, (err, result) => {
              if (err) return console.log(err)
           })
-         }
+        } else {
+          //Update Session Details
+          //var ll = Date.now() - result[0].last
+          var newlast = {$set: {last: Date.now()} }
+          sess.update({agentid:req.body.agentid}, newlast, function(err, res) {
+            if (err) throw err;
+          });
+        }
      })
+
+
 
      // Get tasks for agentId
      const collection = db.collection('TASK');
@@ -83,9 +95,8 @@ app.post('/api/update/', (req, res) => {
 //Get API data
 app.post('/api/c2/', (req, res) => {
    // Determine query type
-   console.log(req.body)
-
-
+   //console.log(req.body)
+   //console.log("C2")
 
    // If query == Get Tasks
    if (req.body.collection == "C2") {
@@ -103,11 +114,11 @@ app.post('/api/c2/', (req, res) => {
  })
  //Session Data
  app.post('/api/sessions/', (req, res) => {
-   console.log(req.body)
+   //console.log(req.body)
    const collection = db.collection('SESSIONS');
    collection.find().toArray(function (err, result) {
        if (err) throw err
-       console.log(result)
+       //console.log(result)
        res.json(result)
    })
  })
