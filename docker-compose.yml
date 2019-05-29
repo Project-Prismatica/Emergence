@@ -1,11 +1,13 @@
-version: "2"
+version: "2.1"
 services:
   app:
     container_name: app
     restart: always
     build: .
     ports:
-      - "29001:29001"
+      - "0.0.0.0:29001:29001"
+    expose:
+      - "29001"
     links:
       - mongo
   mongo:
@@ -14,4 +16,4 @@ services:
     volumes:
       - ./data:/data/db
     ports:
-      - "27017:27017"
+      - "127.0.0.1:27017:27017"
