@@ -12,7 +12,7 @@ const mongo = require('mongodb');
 
 var db
 
-MongoClient.connect('mongodb://mongo:27017', (err, client) => {
+MongoClient.connect('mongodb://localhost:27017', (err, client) => {
   if (err) { return console.log(err); }
   db = client.db('prismatica'); // whatever your database name is
   // Check if default user exists and update as needed
@@ -23,7 +23,7 @@ MongoClient.connect('mongodb://mongo:27017', (err, client) => {
     else {
       if(result.length === 0) {
         console.log('Adding default \'admin\' user');
-        bcrypt.hash('test', 10, (err, bcryptedPassword) => {
+        bcrypt.hash('asdfasdf', 10, (err, bcryptedPassword) => {
           const defaultAdmin = {
             username: 'admin',
             password: bcryptedPassword
@@ -33,7 +33,7 @@ MongoClient.connect('mongodb://mongo:27017', (err, client) => {
       }
       console.log("Successfully added default user");
     }
-  });      
+  });
   app.listen(29001, () => {
     console.log('listening on 29001')
   })
@@ -55,7 +55,7 @@ passport.use(new Strategy(
           //go away
           return cb(null, false);
        }
-      });      
+      });
     });
 }));
 
@@ -66,7 +66,7 @@ passport.serializeUser((user, cb) => {
 passport.deserializeUser((id, cb) => {
     const sess = db.collection('users');
     const o_id = new mongo.ObjectID(id);
-    console.log(id);
+    //console.log(id);
     sess.find({"_id":o_id}).limit(1).toArray((err, result) => {
       if (err) { return cb(err); }
       return cb(null, result[0]);
@@ -74,7 +74,7 @@ passport.deserializeUser((id, cb) => {
 });
 
 const app = express();
-app.use(require('morgan')('combined'));
+//app.use(require('morgan')('combined'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 // NEED TO GENERATE A SECRET RANDOMLY
@@ -96,7 +96,7 @@ app.get('/requires-session',
     res.send(response);
 });
 
-app.post('/login', 
+app.post('/login',
 passport.authenticate('local', { failureRedirect: '/login' }),
 (req, res) => {
   var response = { status: "login success"};
@@ -119,7 +119,8 @@ app.post('/hash',
 );
 
 //Get API data
-app.post('/api/get/', (req, res) => {
+app.post('/api/get/', require('connect-ensure-login').ensureLoggedIn(), (req, res) => {
+
   // Determine query type
   //console.log(req.body)
   //console.log("GET")
@@ -170,7 +171,7 @@ app.post('/api/get/', (req, res) => {
 })
 
 //TASK Agent
-app.post('/api/task/', (req, res) => {
+app.post('/api/task/', require('connect-ensure-login').ensureLoggedIn(), (req, res) => {
   console.log(req.body)
   const collection = db.collection('TASK');
   collection.save(req.body, (err, result) => {
@@ -180,7 +181,7 @@ app.post('/api/task/', (req, res) => {
 })
 
 //Set API data
-app.post('/api/update/', (req, res) => {
+app.post('/api/update/', require('connect-ensure-login').ensureLoggedIn(), (req, res) => {
   const collection = db.collection('C2');
   console.log(req.body)
   collection.insertOne(req.body, (err, result) => {
@@ -190,7 +191,7 @@ app.post('/api/update/', (req, res) => {
 })
 
 //Get API data
-app.post('/api/c2/', (req, res) => {
+app.post('/api/c2/', require('connect-ensure-login').ensureLoggedIn(), (req, res) => {
   // Determine query type
   //console.log(req.body)
   //console.log("C2")
@@ -211,7 +212,7 @@ app.post('/api/c2/', (req, res) => {
 })
 
 //Session Data
-app.post('/api/sessions/', (req, res) => {
+app.post('/api/sessions/', require('connect-ensure-login').ensureLoggedIn(), (req, res) => {
   //console.log(req.body)
   const collection = db.collection('SESSIONS');
   collection.find().toArray(function (err, result) {
