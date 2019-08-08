@@ -1,3 +1,34 @@
+<<<<<<< HEAD
+{
+  "name": "emergence",
+  "version": "1.0.0",
+  "description": "The Emergence fabric is an interface where interaction and integration of disparate information security subsystems gain combined intellegence",
+  "main": "server.js",
+  "keywords": [
+    "InfoSec",
+    "Penetration Testing"
+  ],
+  "scripts": {
+    "dev": "nodemon server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^3.0.6",
+    "body-parser": "^1.18.3",
+    "connect-ensure-login": "^0.1.1",
+    "express": "^4.17.1",
+    "express-session": "^1.16.2",
+    "mongodb": "^3.1.3",
+    "morgan": "^1.9.1",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.14.11"
+  }
+}
+=======
 {
   "name": "emergence",
   "version": "1.0.0",
@@ -21,3 +52,4 @@
     "nodemon": "^1.14.11"
   }
 }
+>>>>>>> master
