@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 FROM node:latest
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
@@ -9,3 +10,14 @@ CMD [ "ifconfig" ]
 CMD [ "npm", "install" ]
 CMD [ "npm", "rebuild" ]
 CMD [ "npm", "start" ]
+=======
+FROM node:latest
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+COPY package.json /usr/src/app/
+RUN npm install
+COPY . /usr/src/app
+EXPOSE 29001
+CMD [ "ifconfig" ]
+CMD [ "npm", "start" ]
+>>>>>>> master
