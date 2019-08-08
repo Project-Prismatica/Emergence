@@ -12,12 +12,8 @@ const mongo = require('mongodb');
 
 var db
 
-<<<<<<< HEAD
 //MongoClient.connect('mongodb://localhost:27017', (err, client) => {
 MongoClient.connect('mongodb://mongo:27017', (err, client) => {
-=======
-MongoClient.connect('mongodb://localhost:27017', (err, client) => {
-<<<<<<< HEAD
   if (err) { return console.log(err); }
   db = client.db('prismatica'); // whatever your database name is
   // Check if default user exists and update as needed
@@ -39,12 +35,9 @@ MongoClient.connect('mongodb://localhost:27017', (err, client) => {
       console.log("Successfully added default user");
     }
   });
-=======
-//MongoClient.connect('mongodb://mongo:27017', (err, client) => {
->>>>>>> a7e5ef676b076341cc3b451188003e91df7e842f
+
   if (err) return console.log(err)
   db = client.db('prismatica') // whatever your database name is
->>>>>>> master
   app.listen(29001, () => {
     console.log('listening on 29001')
   })
