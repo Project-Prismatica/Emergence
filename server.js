@@ -6,14 +6,16 @@ const passport = require('passport');
 const Strategy = require('passport-local').Strategy;
 const bodyParser = require('body-parser');
 const { exec } = require('child_process');
+const multer = require('multer');
+const url = require('url');
 
 const MongoClient = require('mongodb').MongoClient;
 const mongo = require('mongodb');
 
 var db
 
-//MongoClient.connect('mongodb://localhost:27017', (err, client) => {
-MongoClient.connect('mongodb://mongo:27017', (err, client) => {
+MongoClient.connect('mongodb://localhost:27017', (err, client) => {
+//MongoClient.connect('mongodb://mongo:27017', (err, client) => {
   if (err) { return console.log(err); }
   db = client.db('prismatica'); // whatever your database name is
   // Check if default user exists and update as needed
@@ -219,6 +221,63 @@ app.post('/api/c2/', require('connect-ensure-login').ensureLoggedIn(), (req, res
 app.post('/api/sessions/', require('connect-ensure-login').ensureLoggedIn(), (req, res) => {
   //console.log(req.body)
   const collection = db.collection('SESSIONS');
+  collection.find().toArray(function (err, result) {
+      if (err) throw err
+      //console.log(result)
+      res.json(result)
+  })
+})
+
+//Download File
+//Need to add auth... Issue is the Diagon renderer function... store session cookie in settings.json???
+app.get('/api/dl/*', (req, res) => {
+  console.log(req.body)
+  console.log(req.url)
+  var path = url.parse(req.url).pathname
+  console.log(path.split('/'))
+  const file = 'data/' + path.split('/')[path.split('/').length-1];
+  res.download(file); // Set disposition and send it.
+
+})
+
+//Upload file
+var filename = ''
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'data')
+  },
+  filename: function (req, file, cb) {
+    filename = file.originalname.split(".")[0] + '-' + Date.now() + "." + file.originalname.split(".")[1]
+    cb(null, filename)
+  }
+})
+
+var upload = multer({ storage: storage })
+
+app.post('/api/up/', upload.single('filename'), (req, res, next) => {
+  const file = req.file
+  if (!file) {
+    const error = new Error('Please upload a file')
+    error.httpStatusCode = 400
+    return next(error)
+  }
+  res.send(file)
+  const collection = db.collection('LOOT');
+
+
+  var loot = {
+    "name": filename
+  }
+  console.log(loot)
+  collection.save(loot, (err, result) => {
+    if (err) return console.log(err)
+  })
+})
+
+//Loot Data
+app.post('/api/loot/', require('connect-ensure-login').ensureLoggedIn(), (req, res) => {
+  //console.log(req.body)
+  const collection = db.collection('LOOT');
   collection.find().toArray(function (err, result) {
       if (err) throw err
       //console.log(result)
