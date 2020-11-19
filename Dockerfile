@@ -6,6 +6,4 @@ COPY . /usr/src/app
 RUN npm install
 EXPOSE 29001
 CMD [ "ifconfig" ]
-CMD [ "npm", "install" ]
-CMD [ "npm", "rebuild" ]
-CMD [ "npm", "start" ]
+CMD [ "npm", "run", "dev" ]
