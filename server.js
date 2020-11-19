@@ -14,8 +14,8 @@ const mongo = require('mongodb');
 
 var db
 
-MongoClient.connect('mongodb://localhost:27017', (err, client) => {
-//MongoClient.connect('mongodb://mongo:27017', (err, client) => {
+//MongoClient.connect('mongodb://localhost:27017', (err, client) => {
+MongoClient.connect('mongodb://mongo:27017', (err, client) => {
   if (err) { return console.log(err); }
   db = client.db('prismatica'); // whatever your database name is
   // Check if default user exists and update as needed

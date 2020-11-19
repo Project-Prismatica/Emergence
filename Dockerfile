@@ -6,4 +6,4 @@ COPY . /usr/src/app
 RUN npm install
 EXPOSE 29001
 CMD [ "ifconfig" ]
-CMD [ "npm", "run", "dev" ]
+CMD [ "node", "/usr/src/app/server.js" ]
